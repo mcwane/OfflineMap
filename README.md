@@ -35,3 +35,6 @@ Instead [PouchDB](http://pouchdb.com/) also can used [localForage](https://githu
 
 ### Open Layers with IndexedDB and WebSQL:
 [Example](http://tbicr.github.com/OfflineMap/openlayers/index.html) and [Code](https://github.com/tbicr/OfflineMap/tree/master/openlayers_idb_sql_site). [MIT License](http://opensource.org/licenses/mit-license.php).
+=======
+# OfflineMap
+Offline map cache using leaflet js and PouchDB
