@@ -62,7 +62,11 @@ var map = L.map('map').setView([34.730539, -86.586181], 12);
 //new StorageTileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {storage: db}).addTo(map);
 //https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png
 
-new StorageTileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {storage: db}).addTo(map);
+var tileServiceURL = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
+
+var mapBoxServiceURL = 'https://{s}.tiles.mapbox.com/v4/examples.map-i87786ca/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoicnJhbXByYWthc2gxIiwiYSI6IjdlM2M3OTVjMmRlMTk4Mjk5NTkyMjQzNTVkMTNhZWQ5In0.d4GvTDZvO4orrpxks1zLgw'
+
+new StorageTileLayer(mapBoxServiceURL, {storage: db}).addTo(map);
 
 map.addControl(new Control({position: 'topleft', innerHTML: 'C', handler: function () {
     ajax('cache_keys.json', 'text', function (response) {
