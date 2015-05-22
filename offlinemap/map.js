@@ -22,7 +22,15 @@ var StorageTileLayer = L.TileLayer.extend({
                 if (value) {
                     self._setUpTile(tile, value.v);
                 } else {
-                    self._setUpTile(tile, self.getTileUrl(tilePoint));
+		     var tileurl=self.getTileUrl(tilePoint);
+                    self._setUpTile(tile,tileurl);
+		    ajax(tileurl, 'blob', function (response) {
+                    var reader = new FileReader();
+                    reader.onloadend = function(e) {
+                        db.put({_id: key, v: e.target.result});
+                    };
+                    reader.readAsDataURL(response);
+                });
                 }
             });
         } else {
@@ -67,12 +75,15 @@ var tileServiceURL = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
 var mapBoxServiceURL = 'https://{s}.tiles.mapbox.com/v4/examples.map-i87786ca/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoicnJhbXByYWthc2gxIiwiYSI6IjdlM2M3OTVjMmRlMTk4Mjk5NTkyMjQzNTVkMTNhZWQ5In0.d4GvTDZvO4orrpxks1zLgw'
 
 new StorageTileLayer(mapBoxServiceURL, {storage: db}).addTo(map);
-
+/*
 map.addControl(new Control({position: 'topleft', innerHTML: 'C', handler: function () {
     ajax('cache_keys.json', 'text', function (response) {
         var tile_key_list = JSON.parse(response);
         for (var i = 0, l = tile_key_list.length; i < l; i++) {
             (function (key) {
+	      //"http://api.tiles.mapbox.com/v4/examples.map-i87786ca/0/0/0.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6IlhHVkZmaW8ifQ.hAMX5hSW-QnTeRCMAy9A8Q
+                //var src = 'http://tiles.mapbox.com/' + key.split(',').join('/') + '.png';
+                //var src = 'http://api.tiles.mapbox.com/v4/examples.map-i87786ca/' + key.split(',').join('/') + '.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6IlhHVkZmaW8ifQ.hAMX5hSW-QnTeRCMAy9A8Q';
                 var src = 'http://tile.osm.org/' + key.split(',').join('/') + '.png';
 
                 console.log('TEST LOCATON'+src);
@@ -86,7 +97,7 @@ map.addControl(new Control({position: 'topleft', innerHTML: 'C', handler: functi
             })(tile_key_list[i]);
         }
     });
-}}));
+}}));*/
 
 map.addControl(new Control({position: 'topleft', innerHTML: 'D', handler: function () {
     PouchDB.destroy(dbname, function (err, value) {
